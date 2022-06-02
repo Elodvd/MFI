@@ -1,0 +1,11 @@
+.mapContainer{
+    width:100%;
+    height:100%; 
+}
+
+
+.mapElement{
+    width:1200px;
+    height:500px; 
+    margin:0 auto;
+}
