@@ -1,38 +1,66 @@
-//import { apiCall } from "../../../utils/API";
-import "./chart.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+//import { playgrounds } from "../data/data";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import "./chart.css"
 
-const Chart = ({city}) => {
-  const [data, setData] = useState({});
-  const [location, setLocation] = useState("");
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`;
+const Chart = ({chartOptions}) => {
+  /*
+  const ToggleChart = () => {
+    setChartOptions([
+      [5],
+      [20],
+      [20]
+    ]);
+  };
+
+  const [chartOptions, setChartOptions] = useState([
+    [10],
+    [70],
+    [50]
+  ]);
+  */
+
+  const Options = {
+    chart: {
+      type: "column",
+    },
+    title: {
+      text: 'Last three days Temperature and Humidity %',
+    },
+    xAxis: {
+      categories: [
+        "D-2",
+        "D-1",
+        "DDay"
+      ],
+    },
+    yAxis: {
+      title: {
+        text: "Temperature",
+      },
+    },
+    legend: {
+      enabled:false,
+      title:"test"
+    },
+    series: [
+      {
+      
+        data: chartOptions,
+      },
+    ],
+  };
 
   return (
     <div className="chartContainer">
-      <div className="chart"></div>
-      <div className="chartinfo">
-        <p>temp1</p>
-        <p>temp2</p>
-        <p>temp3</p>
-        <p>hum1</p>
-        <p>hum2</p>
-        <p>hum3</p>
-      </div>
+      <HighchartsReact highcharts={Highcharts} options={Options} />
     </div>
   );
 };
 
 export default Chart;
-/*
-<div>
-        <p>Température jour 1 : {weather.temp[0]}</p>
-        <p>Température jour 2 : {weather.temp[1]}</p>
-        <p>Température jour 3 : {weather.temp[2]}</p>
 
-        <p>Taux humidité jour 1 : {weather.humidity[0]}%</p>
-        <p>Taux humidité jour 2 : {weather.humidity[1]}%</p>
-        <p>Taux humidité jour 3 : {weather.humidity[2]}%</p>
-      </div>
 
-    */
+

@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <h1 className='text-red-600'>My app</h1>
       <MapWrapper />
-      <Chart />
+    <Chart chartOptions={[10,15,25]} />
     
     </div>
   );

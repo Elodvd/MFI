@@ -11,7 +11,7 @@ import VectorSource from "ol/source/Vector";
 import "./mapWrapper.css";
 import { StyleFeature } from "../../utils/StyleFeature";
 import { Toulouse, Narbonne, Montpellier } from "../../utils/Locations";
-import { apiCall } from "../../utils/API";
+//import { apiCall } from "../../utils/API";
 import axios from "axios";
 
 const BaseLayer = new TileLayer({
@@ -61,14 +61,11 @@ function MapWrapper() {
     if (map) {
       map.on("click", (event) => {
         map.forEachFeatureAtPixel(event.pixel, (feature) => {
-          const featureName = feature.get("name");
           const lonlat = toLonLat(feature.getGeometry().getCoordinates());
           const lon = lonlat[0];
           const lat = lonlat[1];
-          console.log("featureName", featureName);
-          console.log("lon & lat", lon, lat);
-
-          const fetchApi = async () => {
+        
+          const apiCall = async () => {
             const response = await fetch(
               `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`
             );
@@ -84,7 +81,7 @@ function MapWrapper() {
               resJson.daily[2].humidity,
             ]);
           };
-          fetchApi();
+          apiCall();
         });
       });
 
