@@ -4,7 +4,7 @@ import View from 'ol/View';
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
 import "ol/ol.css";
-import { fromLonLat } from "ol/proj";
+import { fromLonLat, toLonLat } from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
@@ -12,7 +12,7 @@ import VectorSource from "ol/source/Vector";
 import "./mapWrapper.css";
 import { StyleFeature } from "../../utils/StyleFeature";
 import {Toulouse, Narbonne, Montpellier} from "../../utils/Locations"
-
+import { apiCall } from "../../utils/API";
 import axios from "axios";
 
 
@@ -41,6 +41,8 @@ function MapWrapper() {
   //const [pointClick, setPointClick] = useState(false);
   const [map, setMap] = useState();
   const [data, setData] = useState({});
+  const[temp, setTemp] = useState([]);
+  const[humidityTx, setHumidityTx] = useState([]);
   const[location, setLocation] = useState([]);
   const mapElement= useRef();
   const chartElement= useRef();
@@ -68,19 +70,30 @@ function MapWrapper() {
   useEffect(() => {
     if (map) {
       map.on("click", (event) => {
-        map.forEachFeatureAtPixel(event.pixel, (feature) => {
-           // const featureName = feature.get("name");
-            setLocation(feature.getGeometry().getCoordinates());
-            const lon=location[0];
-            const lat=location[1];
-            console.log(lon,lat);
-            setLocation()
-            const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`;
+        map.forEachFeatureAtPixel(event.pixel, (feature) => {     
+            const featureName=feature.get("name");
+            const featureXY=feature.getGeometry().getCoordinates();
+            const lonlat= toLonLat(featureXY);
+            const lon = lonlat[0];
+            const lat=lonlat[1]
+            console.log('featureName',featureName)
+            console.log('lon & lat', lon, lat);
+           
+        
+          
 
-            axios.get(url).then((response) => {
-              setData(response.data)
-              console.log(response.data)
+            axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`)
+            .then(res => {
+              const datatemp = [data.daily[0].temp.day, data.daily[1].temp.day,data.daily[2].temp.day];
+              setTemp(datatemp);
+              const datahumidity= [data.daily[0].humidity,data.daily[1].humidity,data.daily[2].humidity];
+              setHumidityTx(datahumidity);
             })
+
+
+            
+            
+            
         });
       });
       map.on("pointermove", function (e) {

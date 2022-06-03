@@ -1,25 +1,27 @@
-import {apiCall} from "../../../utils/API"
+//import { apiCall } from "../../../utils/API";
 import "./chart.css";
 import React, { useState, useEffect } from "react";
 
-const Chart =()=> {
+const Chart = ({city}) => {
+  const [data, setData] = useState({});
+  const [location, setLocation] = useState("");
 
-const [data, setData]=useState({})
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`;
+
   return (
     <div className="chartContainer">
-       <div className="chart"></div>
-       <div className="chartinfo">
-           <p>temp1</p>
-           <p>temp2</p>
-           <p>temp3</p>
-           <p>hum1</p>
-           <p>hum2</p>
-           <p>hum3</p>
-       </div>
+      <div className="chart"></div>
+      <div className="chartinfo">
+        <p>temp1</p>
+        <p>temp2</p>
+        <p>temp3</p>
+        <p>hum1</p>
+        <p>hum2</p>
+        <p>hum3</p>
+      </div>
     </div>
   );
 };
-
 
 export default Chart;
 /*
