@@ -1,5 +1,5 @@
 import MapWrapper from './components/MapWrapper/MapWrapper';
-import Chart from './components/MapWrapper/Chart/Chart';
+import Chart from './components/Chart/Chart';
 import './App.css';
 
 
