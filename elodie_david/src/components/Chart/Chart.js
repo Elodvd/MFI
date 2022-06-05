@@ -6,25 +6,10 @@ import "./chart.css"
 
 
 const Chart = ({chartOptions}) => {
-  /*
-  const ToggleChart = () => {
-    setChartOptions([
-      [5],
-      [20],
-      [20]
-    ]);
-  };
-
-  const [chartOptions, setChartOptions] = useState([
-    [10],
-    [70],
-    [50]
-  ]);
-  */
 
   const Options = {
     chart: {
-      type: "column",
+      type: "line",
     },
     title: {
       text: 'Last three days Temperature and Humidity %',
@@ -42,16 +27,59 @@ const Chart = ({chartOptions}) => {
       },
     },
     legend: {
-      enabled:false,
+      enabled:true,
       title:"test"
     },
+    plotOptions: {
+      line: {
+          dataLabels: {
+              enabled: true
+          },
+          enableMouseTracking: false
+      }
+  },
+         
     series: [
       {
       
-        data: chartOptions,
+        data: chartOptions
       },
     ],
+    annotations: [ {
+      draggable: '',
+      labels: [{
+          point: {
+              xAxis: 0,
+              yAxis: 0,
+              x: 101.44,
+              y: 1026
+          },
+          x: -30,
+          text: 'Col de la Joux'
+      }, {
+          point: {
+              xAxis: 0,
+              yAxis: 0,
+              x: 138.5,
+              y: 748
+          },
+          text: 'Côte de Viry'
+      }, {
+          point: {
+              xAxis: 0,
+              yAxis: 0,
+              x: 176.4,
+              y: 1202
+          },
+          text: 'Montée de la Combe <br>de Laisia Les Molunes'
+      }
+    ]
+    }]
+      
+  
   };
+
+
 
   return (
     <div className="chartContainer">

@@ -11,8 +11,7 @@ import VectorSource from "ol/source/Vector";
 import "./mapWrapper.css";
 import { StyleFeature } from "../../utils/StyleFeature";
 import { Toulouse, Narbonne, Montpellier } from "../../utils/Locations";
-//import { apiCall } from "../../utils/API";
-import axios from "axios";
+import Chart from '../Chart/Chart';
 
 const BaseLayer = new TileLayer({
   source: new OSM(),
@@ -30,12 +29,12 @@ const vectorLayer = new VectorLayer({
 });
 
 function MapWrapper() {
-  //const [pointClick, setPointClick] = useState(false);
+  const [pointClick, setPointClick] = useState(false);
   const [map, setMap] = useState();
   const [data, setData] = useState({});
   const [temp, setTemp] = useState([]);
   const [humidityTx, setHumidityTx] = useState([]);
-  const [location, setLocation] = useState([]);
+  
   const mapElement = useRef();
   const chartElement = useRef();
 
@@ -82,6 +81,7 @@ function MapWrapper() {
             ]);
           };
           apiCall();
+          setPointClick(true);
         });
       });
 
@@ -97,7 +97,8 @@ function MapWrapper() {
     <div className="mapContainer">
       <div className="mapElement" ref={mapElement} />
       <div className="mapinfo">
-        <p>{temp[0] ? temp[0] : "no"}</p>
+        <p>{pointClick ? <Chart chartOptions={[temp[0],temp[1],temp[2]]} /> :  "no"}</p>
+        
       </div>
     </div>
   );
