@@ -2,84 +2,74 @@ import React, { useState } from "react";
 //import { playgrounds } from "../data/data";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import "./chart.css"
+import "./chart.css";
 
-
-const Chart = ({chartOptions}) => {
-
-  const Options = {
-    chart: {
-      type: "line",
-    },
+const Chart = ({ chartTempOptions, chartHumOptions }) => {
+  const Options = {  
     title: {
-      text: 'Last three days Temperature and Humidity %',
+      text: "Last three days Temperature and Humidity %",
     },
     xAxis: {
-      categories: [
-        "D-2",
-        "D-1",
-        "DDay"
-      ],
+      categories: ["D-2", "D-1", "DDay", "D+1", "D+2"],
+      crosshair: true,
     },
-    yAxis: {
-      title: {
-        text: "Temperature",
+    yAxis: [
+      {
+        labels: {
+     
+          format: "{value}°C",
+        },
+        title: {
+          text: "Temperature",
+        },
       },
+      {
+        labels: {
+      
+          format: "{value}%",
+        },
+        title: {
+          text: "Humidity",
+        },
+        opposite: true,
+      },
+    ],
+    tooltip: {
+      shared: true,
     },
     legend: {
-      enabled:true,
-      title:"test"
+      layout: 'vertical',
+      align: 'left',
     },
     plotOptions: {
       line: {
-          dataLabels: {
-              enabled: true
-          },
-          enableMouseTracking: false
-      }
-  },
-         
+        dataLabels: {
+          enabled: true
+        },
+        enableMouseTracking: false,
+      },
+    },
+
     series: [
       {
-      
-        data: chartOptions
+        type:'column',
+        name: "Temperature",
+        yAxis: 1,
+        data: chartTempOptions,
+        tooltip: {
+          valueSuffix: " °C"
+        },
+      },
+      {
+        type:'line',
+        name: "Humidity",
+        data: chartHumOptions,
+        tooltip: {
+          valueSuffix: " %"
+        },
       },
     ],
-    annotations: [ {
-      draggable: '',
-      labels: [{
-          point: {
-              xAxis: 0,
-              yAxis: 0,
-              x: 101.44,
-              y: 1026
-          },
-          x: -30,
-          text: 'Col de la Joux'
-      }, {
-          point: {
-              xAxis: 0,
-              yAxis: 0,
-              x: 138.5,
-              y: 748
-          },
-          text: 'Côte de Viry'
-      }, {
-          point: {
-              xAxis: 0,
-              yAxis: 0,
-              x: 176.4,
-              y: 1202
-          },
-          text: 'Montée de la Combe <br>de Laisia Les Molunes'
-      }
-    ]
-    }]
-      
-  
   };
-
-
 
   return (
     <div className="chartContainer">
@@ -89,6 +79,3 @@ const Chart = ({chartOptions}) => {
 };
 
 export default Chart;
-
-
-

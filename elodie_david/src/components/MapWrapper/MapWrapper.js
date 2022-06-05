@@ -73,11 +73,15 @@ function MapWrapper() {
               resJson.daily[0].temp.day,
               resJson.daily[1].temp.day,
               resJson.daily[2].temp.day,
+              resJson.daily[3].temp.day,
+              resJson.daily[4].temp.day,
             ]);
             setHumidityTx([
               resJson.daily[0].humidity,
               resJson.daily[1].humidity,
               resJson.daily[2].humidity,
+              resJson.daily[3].humidity,
+              resJson.daily[4].humidity,
             ]);
           };
           apiCall();
@@ -97,7 +101,7 @@ function MapWrapper() {
     <div className="mapContainer">
       <div className="mapElement" ref={mapElement} />
       <div className="mapinfo">
-        <p>{pointClick ? <Chart chartOptions={[temp[0],temp[1],temp[2]]} /> :  "no"}</p>
+        <div>{pointClick ? <Chart chartTempsOptions={[temp[0],temp[1],temp[2],temp[3],temp[4]]} chartHumOptions={[humidityTx[0],humidityTx[1],humidityTx[2],humidityTx[3],humidityTx[4]]} /> :  "no"}</div>
         
       </div>
     </div>
