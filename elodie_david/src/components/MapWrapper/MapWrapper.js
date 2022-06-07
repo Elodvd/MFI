@@ -101,8 +101,8 @@ function MapWrapper() {
     <div className="mapContainer">
       <div className="mapElement" ref={mapElement} />
       <div className="mapinfo">
-        <div>{pointClick ? <Chart chartTempsOptions={[temp[0],temp[1],temp[2],temp[3],temp[4]]} chartHumOptions={[humidityTx[0],humidityTx[1],humidityTx[2],humidityTx[3],humidityTx[4]]} /> :  "no"}</div>
-        
+        <div>{pointClick ? <Chart chartTempOptions={[{y:temp[0], id:'temp1'},temp[1],temp[2],temp[3],temp[4]]} chartHumOptions={[{y:humidityTx[0], id:"test"},humidityTx[1],humidityTx[2],humidityTx[3],humidityTx[4]]} /> :  "no"}</div>
+      
       </div>
     </div>
   );
