@@ -10,6 +10,8 @@ import VectorSource from "ol/source/Vector";
 
 import "./mapWrapper.css";
 import { StyleFeature } from "../../utils/StyleFeature";
+import { apiCall } from "../../utils/API";
+import { ExtractHum, ExtractTemps } from "../../utils/ExtractData";
 import { Toulouse, Narbonne, Montpellier } from "../../utils/Locations";
 import Chart from "../Chart/Chart";
 import close from "./close.svg";
@@ -60,47 +62,30 @@ function MapWrapper() {
     }
   }, []);
 
-  useEffect(() => {
-    if (map) {
-      map.on("click", (event) => {
-        map.forEachFeatureAtPixel(event.pixel, (feature) => {
-          const lonlat = toLonLat(feature.getGeometry().getCoordinates());
-          const lon = lonlat[0];
-          const lat = lonlat[1];
-          setFeatureName(feature.get("name"));
+  if (map) {
+    map.on("click", (event) => {
+      map.forEachFeatureAtPixel(event.pixel, (feature) => {
+        const lonlat = toLonLat(feature.getGeometry().getCoordinates());
+        const lon = lonlat[0];
+        const lat = lonlat[1];
+        setFeatureName(feature.get("name"));
 
-          const apiCall = async () => {
-            const response = await fetch(
-              `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`
-            );
-            const resJson = await response.json();
-            setTemp([
-              resJson.daily[0].temp.day,
-              resJson.daily[1].temp.day,
-              resJson.daily[2].temp.day,
-              resJson.daily[3].temp.day,
-              resJson.daily[4].temp.day,
-            ]);
-            setHumidityTx([
-              resJson.daily[0].humidity,
-              resJson.daily[1].humidity,
-              resJson.daily[2].humidity,
-              resJson.daily[3].humidity,
-              resJson.daily[4].humidity,
-            ]);
-          };
-          apiCall();
-          setPointClick(true);
-        });
+        const fetchData = async () => {
+          const resJson = await apiCall(lat, lon);
+          setTemp(ExtractTemps(resJson));
+          setHumidityTx(ExtractHum(resJson));
+        };
+        setPointClick(true);
+        fetchData();
       });
+    });
 
-      map.on("pointermove", function (e) {
-        const pixel = map.getEventPixel(e.originalEvent);
-        const match = map.hasFeatureAtPixel(pixel);
-        map.getTargetElement().style.cursor = match ? "pointer" : "";
-      });
-    }
-  });
+    map.on("pointermove", function (e) {
+      const pixel = map.getEventPixel(e.originalEvent);
+      const match = map.hasFeatureAtPixel(pixel);
+      map.getTargetElement().style.cursor = match ? "pointer" : "";
+    });
+  }
 
   return (
     <div className="mapContainer">
@@ -110,14 +95,8 @@ function MapWrapper() {
           <div>
             <Chart
               title={`Last three days Temperature and Humidity % in ${featureName}`}
-              chartTempOptions={[temp[0], temp[1], temp[2], temp[3], temp[4]]}
-              chartHumOptions={[
-                humidityTx[0],
-                humidityTx[1],
-                humidityTx[2],
-                humidityTx[3],
-                humidityTx[4],
-              ]}
+              chartTempOptions={[...temp]}
+              chartHumOptions={[...humidityTx]}
             />
           </div>
           <img

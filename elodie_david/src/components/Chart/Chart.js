@@ -1,7 +1,6 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-
 const Chart = ({ title, chartTempOptions, chartHumOptions }) => {
   const Options = {
     title: {
@@ -51,7 +50,6 @@ const Chart = ({ title, chartTempOptions, chartHumOptions }) => {
       {
         type: "column",
         name: "Temperature",
-        yAxis: 1,
         data: chartTempOptions,
         tooltip: {
           valueSuffix: " °C",
@@ -60,6 +58,7 @@ const Chart = ({ title, chartTempOptions, chartHumOptions }) => {
       {
         type: "line",
         name: "Humidity",
+        yAxis: 1,
         data: chartHumOptions,
         tooltip: {
           valueSuffix: " %",
