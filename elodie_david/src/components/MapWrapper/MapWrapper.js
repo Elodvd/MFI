@@ -11,7 +11,8 @@ import VectorSource from "ol/source/Vector";
 import "./mapWrapper.css";
 import { StyleFeature } from "../../utils/StyleFeature";
 import { Toulouse, Narbonne, Montpellier } from "../../utils/Locations";
-import Chart from '../Chart/Chart';
+import Chart from "../Chart/Chart";
+import close from "./close.svg";
 
 const BaseLayer = new TileLayer({
   source: new OSM(),
@@ -30,13 +31,16 @@ const vectorLayer = new VectorLayer({
 
 function MapWrapper() {
   const [pointClick, setPointClick] = useState(false);
+  const [featureName, setFeatureName] = useState("");
   const [map, setMap] = useState();
-  const [data, setData] = useState({});
   const [temp, setTemp] = useState([]);
   const [humidityTx, setHumidityTx] = useState([]);
-  
+
   const mapElement = useRef();
-  const chartElement = useRef();
+
+  const handleFeature = () => {
+    setPointClick(!pointClick);
+  };
 
   useEffect(() => {
     if (mapElement.current != null) {
@@ -63,7 +67,8 @@ function MapWrapper() {
           const lonlat = toLonLat(feature.getGeometry().getCoordinates());
           const lon = lonlat[0];
           const lat = lonlat[1];
-        
+          setFeatureName(feature.get("name"));
+
           const apiCall = async () => {
             const response = await fetch(
               `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=539a92a71fbb1b6ee46f8afdfc95bb2e`
@@ -100,10 +105,31 @@ function MapWrapper() {
   return (
     <div className="mapContainer">
       <div className="mapElement" ref={mapElement} />
-      <div className="mapinfo">
-        <div>{pointClick ? <Chart chartTempOptions={[{y:temp[0], id:'temp1'},temp[1],temp[2],temp[3],temp[4]]} chartHumOptions={[{y:humidityTx[0], id:"test"},humidityTx[1],humidityTx[2],humidityTx[3],humidityTx[4]]} /> :  "no"}</div>
-      
-      </div>
+      {pointClick ? (
+        <div className="chartElement">
+          <div>
+            <Chart
+              title={`Last three days Temperature and Humidity % in ${featureName}`}
+              chartTempOptions={[temp[0], temp[1], temp[2], temp[3], temp[4]]}
+              chartHumOptions={[
+                humidityTx[0],
+                humidityTx[1],
+                humidityTx[2],
+                humidityTx[3],
+                humidityTx[4],
+              ]}
+            />
+          </div>
+          <img
+            className="imgClose"
+            src={close}
+            alt="close"
+            onClick={handleFeature}
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

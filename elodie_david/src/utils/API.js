@@ -5,7 +5,6 @@ export const apiCall = async (lat, lon) => {
   const response = await axios.get(url);
 
     const data = response.data;
-   // console.log("dataapi",data.daily[0].temp.day)
     return data;
   }
 
