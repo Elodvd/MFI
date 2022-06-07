@@ -1,13 +1,13 @@
-FROM node:latest
+FROM node:16.15 as development
 
 WORKDIR /app
 
 COPY package.json /app
 
-RUN npm
+RUN npm install
 
 COPY . /app
 
 EXPOSE 3000
 
-CMD ["npm","start"]!
+CMD ["npm","start"]
