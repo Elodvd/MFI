@@ -62,30 +62,32 @@ function MapWrapper() {
     }
   }, []);
 
-  if (map) {
-    map.on("click", (event) => {
-      map.forEachFeatureAtPixel(event.pixel, (feature) => {
-        const lonlat = toLonLat(feature.getGeometry().getCoordinates());
-        const lon = lonlat[0];
-        const lat = lonlat[1];
-        setFeatureName(feature.get("name"));
+  useEffect(() => {
+    if (map) {
+      map.on("click", (event) => {
+        map.forEachFeatureAtPixel(event.pixel, (feature) => {
+          const lonlat = toLonLat(feature.getGeometry().getCoordinates());
+          const lon = lonlat[0];
+          const lat = lonlat[1];
+          setFeatureName(feature.get("name"));
 
-        const fetchData = async () => {
-          const resJson = await apiCall(lat, lon);
-          setTemp(ExtractTemps(resJson));
-          setHumidityTx(ExtractHum(resJson));
-        };
-        setPointClick(true);
-        fetchData();
+          const fetchData = async () => {
+            const resJson = await apiCall(lat, lon);
+            setTemp(ExtractTemps(resJson));
+            setHumidityTx(ExtractHum(resJson));
+          };
+          setPointClick(true);
+          fetchData();
+        });
       });
-    });
 
-    map.on("pointermove", function (e) {
-      const pixel = map.getEventPixel(e.originalEvent);
-      const match = map.hasFeatureAtPixel(pixel);
-      map.getTargetElement().style.cursor = match ? "pointer" : "";
-    });
-  }
+      map.on("pointermove", function (e) {
+        const pixel = map.getEventPixel(e.originalEvent);
+        const match = map.hasFeatureAtPixel(pixel);
+        map.getTargetElement().style.cursor = match ? "pointer" : "";
+      });
+    }
+  }, [map]);
 
   return (
     <div className="mapContainer">
