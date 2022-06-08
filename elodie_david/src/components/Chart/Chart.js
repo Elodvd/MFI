@@ -1,6 +1,6 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { ChartOptions } from "../../utils/ChartOptions";
+import { ChartOptions, HumSeries, TempSeries } from "../../utils/ChartOptions";
 import React, { useState, useEffect } from "react";
 
 const Chart = ({ title, chartTempOptions, chartHumOptions }) => {
@@ -10,7 +10,10 @@ const Chart = ({ title, chartTempOptions, chartHumOptions }) => {
     setOptions((prev) => ({
       ...prev,
       title: { text: title },
-      series: [{ data: chartTempOptions }, { data: chartHumOptions }],
+      series: [
+        { ...TempSeries, data: chartTempOptions },
+        { ...HumSeries, data: chartHumOptions },
+      ],
     }));
   }, [title, chartTempOptions, chartHumOptions]);
 

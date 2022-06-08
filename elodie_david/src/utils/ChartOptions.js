@@ -1,3 +1,21 @@
+export const TempSeries = {
+  type: "column",
+  name: "Temperature",
+  data: [],
+  tooltip: {
+    valueSuffix: " °C",
+  },
+};
+export const HumSeries = {
+  type: "line",
+  name: "Humidity",
+  yAxis: 1,
+  data: [],
+  tooltip: {
+    valueSuffix: " %",
+  },
+};
+
 export const ChartOptions = {
   title: {
     text: "",
@@ -42,23 +60,5 @@ export const ChartOptions = {
     },
   },
 
-  series: [
-    {
-      type: "column",
-      name: "Temperature",
-      data: [],
-      tooltip: {
-        valueSuffix: " °C",
-      },
-    },
-    {
-      type: "line",
-      name: "Humidity",
-      yAxis: 1,
-      data: [],
-      tooltip: {
-        valueSuffix: " %",
-      },
-    },
-  ],
+  series: [TempSeries, HumSeries],
 };

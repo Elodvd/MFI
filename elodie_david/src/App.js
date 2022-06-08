@@ -1,15 +1,12 @@
-import MapWrapper from './components/MapWrapper/MapWrapper';
+import MapWrapper from "./components/MapWrapper/MapWrapper";
 
-import './App.css';
-
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <h1>My app</h1>
+      <h1>Weather app</h1>
       <MapWrapper />
-   
-    
     </div>
   );
 }
