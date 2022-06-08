@@ -1,75 +1,22 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { ChartOptions } from "../../utils/ChartOptions";
+import React, { useState, useEffect } from "react";
 
 const Chart = ({ title, chartTempOptions, chartHumOptions }) => {
-  const Options = {
-    title: {
-      text: title,
-    },
-    xAxis: {
-      categories: ["D-2", "D-1", "DDay", "D+1", "D+2"],
-      crosshair: true,
-    },
-    yAxis: [
-      {
-        labels: {
-          format: "{value}°C",
-        },
-        title: {
-          text: "Temperature",
-        },
-      },
-      {
-        labels: {
-          format: "{value}%",
-        },
-        title: {
-          text: "Humidity",
-        },
-        opposite: true,
-      },
-    ],
-    tooltip: {
-      shared: true,
-    },
-    legend: {
-      layout: "vertical",
-      align: "left",
-    },
-    plotOptions: {
-      line: {
-        dataLabels: {
-          enabled: true,
-          format: "{y}%",
-        },
-        enableMouseTracking: true,
-      },
-    },
+  const [options, setOptions] = useState(ChartOptions);
 
-    series: [
-      {
-        type: "column",
-        name: "Temperature",
-        data: chartTempOptions,
-        tooltip: {
-          valueSuffix: " °C",
-        },
-      },
-      {
-        type: "line",
-        name: "Humidity",
-        yAxis: 1,
-        data: chartHumOptions,
-        tooltip: {
-          valueSuffix: " %",
-        },
-      },
-    ],
-  };
+  useEffect(() => {
+    setOptions((prev) => ({
+      ...prev,
+      title: { text: title },
+      series: [{ data: chartTempOptions }, { data: chartHumOptions }],
+    }));
+  }, [title, chartTempOptions, chartHumOptions]);
 
   return (
     <div className="chartContainer">
-      <HighchartsReact highcharts={Highcharts} options={Options} />
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
 };
